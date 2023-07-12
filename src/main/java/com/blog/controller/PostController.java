@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v3/posts")
 public class PostController {
-	
+	// /Bolgging-Application/src/main/resources/application.properties
 	@Autowired
 	private PostService postService;
 	
