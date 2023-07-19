@@ -51,7 +51,6 @@ public class User implements UserDetails{
 	private String about;
 	
 	@OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
-	
 	private List<Post> posts  = new ArrayList<>(); 
 	
 //	@ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)

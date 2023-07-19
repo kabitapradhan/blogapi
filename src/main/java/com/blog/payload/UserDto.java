@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.blog.entity.Post;
 import com.blog.entity.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.NamedStoredProcedureQuery;
@@ -33,6 +34,7 @@ public class UserDto {
 	
 	@Email(message = "Enter proper email")
 	@NotNull(message="User email can not be null")
+	@NotEmpty(message="User email can not be empty")
 	private String email;
 	
 	@NotNull(message="User password can not be null")
@@ -44,5 +46,10 @@ public class UserDto {
 	private String about;
 	
 	private Set<RoleDto> roles = new HashSet<>();
+	
+//	@JsonIgnore
+//	public String getPassword() {
+//		return this.password;
+//	}
 	
 }

@@ -1,5 +1,7 @@
 package com.blog.models;
 
+import com.blog.payload.UserDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +17,5 @@ import lombok.ToString;
 @ToString
 public class Jwtresponse {
 	private String jwtToken;
-	private String username;
+	private UserDto user;
 }

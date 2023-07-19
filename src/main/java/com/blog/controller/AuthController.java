@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.entity.User;
 import com.blog.exception.CustomBadCredentialsException;
 import com.blog.models.JwtRequest;
 import com.blog.models.Jwtresponse;
@@ -50,21 +52,28 @@ public class AuthController {
     private JwtHelper helper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ModelMapper mapper;
+    
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
     
     //// login new user //( /api/v1/auth/login )
     @PostMapping("/login")
     public ResponseEntity<Jwtresponse> login(@RequestBody JwtRequest request) {
-    	System.out.println("userDetails");
-        System.out.println(request.getEmail()+ "&" + request.getPassword());
+//    	System.out.println("userDetails");
+//        System.out.println(request.getEmail()+ "&" + request.getPassword());
+    	
         this.doAuthenticate(request.getEmail(), request.getPassword());
+        
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
-        Jwtresponse response = Jwtresponse.builder()
-                .jwtToken(token)
-                .username(userDetails.getUsername()).build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        
+        Jwtresponse response = new Jwtresponse();
+        response.setJwtToken(token);
+        response.setUser(this.mapper.map((User)userDetails, UserDto.class));
+        
+        return new ResponseEntity<Jwtresponse>(response, HttpStatus.OK);
     }
     private void doAuthenticate(String email, String password) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
